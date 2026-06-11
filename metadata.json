@@ -1,0 +1,8 @@
+{
+  "name": "Gym AI - Training Optimizer",
+  "description": "An AI-powered fitness management system that generates personalized workout and diet plans.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
