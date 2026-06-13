@@ -1,20 +1,54 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# GymAI - Smart Training & Nutrition Optimizer
 
-# Run and deploy your AI Studio app
+GymAI is a professional web application designed to provide personalized workout and diet plans using AI. It features user authentication, profile management, and progress tracking.
 
-This contains everything you need to run your app locally.
+## 📂 Project Structure
 
-View your app in AI Studio: https://ai.studio/apps/9e77b3e8-6aee-4613-9220-8e8d97ad2989
+```text
+Gym-AI_Systme-/
+├── client/              # Frontend (React + Vite + Tailwind)
+│   ├── src/
+│   │   ├── api/         # API client configurations
+│   │   ├── assets/      # Images and styles
+│   │   ├── components/  # Reusable UI components
+│   │   └── ...          # Pages and routes
+├── server/              # Backend (Node.js + Express + MySQL)
+│   ├── controllers/     # Business logic for each route
+│   ├── middleware/      # Auth and safety middleware
+│   ├── routes/          # API endpoint definitions
+│   ├── services/        # AI and background services
+│   └── index.ts         # Server entry point
+├── .env.example         # Template for environment variables
+└── package.json         # Project dependencies and scripts
+```
 
-## Run Locally
+## ✨ Key Features
+*   **AI Plan Generation:** Personalized workout and meal plans based on your BMI, goals, and activity level.
+*   **Progress Tracking:** Log your workouts and track your weight changes over time.
+*   **Secure Auth:** OTP-based email verification and JWT-secured sessions.
+*   **PRO Tier:** Unlock advanced AI features and detailed analytics.
 
-**Prerequisites:**  Node.js
+## 🚀 Quick Start
 
+1.  **Clone the repo:**
+    ```bash
+    git clone https://github.com/Bachahussain/Gym-AI_Systme-.git
+    ```
+2.  **Install dependencies:**
+    ```bash
+    pnpm install
+    ```
+3.  **Configure Environment:**
+    Copy `.env.example` to `.env` and fill in your database and API keys.
+4.  **Run Development Server:**
+    ```bash
+    pnpm dev
+    ```
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## 🛠 Tech Stack
+*   **Frontend:** React, Vite, Tailwind CSS, Lucide React, Axios.
+*   **Backend:** Node.js, Express, MySQL (mysql2), JWT, Nodemailer.
+*   **AI:** Google Gemini 1.5 Flash, Mistral AI.
+
+---
+*Cleaned and restructured for professional use.*
