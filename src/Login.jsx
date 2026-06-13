@@ -1,0 +1,13 @@
+import React from 'react';
+import './AppRoutes.jsx';
+import AuthLayout from './components/auth/AuthLayout';
+import LoginForm from './components/auth/LoginForm';
+
+function Login() {
+  return (
+    <AuthLayout>
+      <LoginForm />
+    </AuthLayout>
+  )
+}
+export default Login;
