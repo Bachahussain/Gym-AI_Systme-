@@ -11,31 +11,33 @@ app.use(cors({
   credentials: true
 }));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Import routes using dynamic import for Vercel
-let routes;
-
-// Simple health check
+// Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', message: 'Backend is running' });
+  res.json({ 
+    status: 'ok', 
+    message: 'Backend is running on Vercel', 
+    timestamp: new Date().toISOString() 
+  });
 });
 
-// Load routes dynamically
-app.use('/api', async (req, res, next) => {
-  if (!routes) {
-    try {
-      const { default: authRoutes } = await import('../server/routes/authRoutes.js');
-      const { default: exerciseRoutes } = await import('../server/routes/exerciseRoutes.js');
-      // Add other routes
-      routes = express.Router();
-      routes.use('/auth', authRoutes);
-      routes.use('/exercises', exerciseRoutes);
-      // Add more
-    } catch (e) {
-      console.error('Route load error:', e);
-    }
+// Proper middleware for Vercel serverless
+app.use('/api/auth', async (req, res) => {
+  try {
+    const { default: authRoutes } = await import('../server/routes/authRoutes.js');
+    const router = express.Router();
+    router.use(authRoutes);
+    return router(req, res);
+  } catch (error) {
+    console.error('Auth route error:', error);
+    res.status(500).json({ error: error.message });
   }
-  next();
+});
+
+// Catch all for other API routes
+app.use('/api/*', (req, res) => {
+  res.status(404).json({ error: 'API route not found', path: req.path });
 });
 
 export default app;
