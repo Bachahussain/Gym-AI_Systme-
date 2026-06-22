@@ -1,37 +1,41 @@
-const express = require('express');
-const cors = require('cors');
-const dotenv = require('dotenv');
-const path = require('path');
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
 
-// Load environment variables
-dotenv.config({ path: path.join(__dirname, '..', '.env') });
+dotenv.config();
 
 const app = express();
 
-// Middleware
 app.use(cors({
-  origin: true,
+  origin: process.env.VITE_API_URL || '*',
   credentials: true
 }));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
-// Import routes
-const authRoutes = require('../server/routes/authRoutes');
-const exerciseRoutes = require('../server/routes/exerciseRoutes');
-const planRoutes = require('../server/routes/planRoutes');
-const userRoutes = require('../server/routes/userRoutes');
+// Import routes using dynamic import for Vercel
+let routes;
 
-// Use routes
-app.use('/api/auth', authRoutes);
-app.use('/api/exercises', exerciseRoutes);
-app.use('/api/plans', planRoutes);
-app.use('/api/users', userRoutes);
-
-// Health check
+// Simple health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', message: 'Backend is running on Vercel' });
+  res.json({ status: 'ok', message: 'Backend is running' });
 });
 
-// Vercel serverless handler
-module.exports = app;
+// Load routes dynamically
+app.use('/api', async (req, res, next) => {
+  if (!routes) {
+    try {
+      const { default: authRoutes } = await import('../server/routes/authRoutes.js');
+      const { default: exerciseRoutes } = await import('../server/routes/exerciseRoutes.js');
+      // Add other routes
+      routes = express.Router();
+      routes.use('/auth', authRoutes);
+      routes.use('/exercises', exerciseRoutes);
+      // Add more
+    } catch (e) {
+      console.error('Route load error:', e);
+    }
+  }
+  next();
+});
+
+export default app;
