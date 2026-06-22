@@ -29,8 +29,8 @@ const login = async (req, res) => {
           const [rows2] = await pool.query('SELECT * FROM user_profiles WHERE user_id = ?', [user.id]);
 
           if (rows2.length > 0) {
-               days = rows2[0].days;  // assuming days still exists or mapping appropriately
-               split = rows2[0].split; // assuming split still exists
+               days = rows2[0].workout_days;
+               split = rows2[0].preferred_split;
                goal = rows2[0].goal;
           }
 
@@ -47,6 +47,7 @@ const login = async (req, res) => {
           return res.json({
                success: true,
                name: user.name,
+               token: token,
                days: days,
                split: split,
                goal: goal

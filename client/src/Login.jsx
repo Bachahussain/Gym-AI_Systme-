@@ -1,5 +1,3 @@
-import React from 'react';
-import './AppRoutes.jsx';
 import AuthLayout from './components/auth/AuthLayout';
 import LoginForm from './components/auth/LoginForm';
 

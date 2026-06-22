@@ -3,30 +3,12 @@ import { generateAiPlan, calculateFitnessMetrics } from '../services/aiService.j
 import { addProgressEntryIfChanged } from '../services/progressTrackingService.js';
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Helper: calculate days since last plan
-// ─────────────────────────────────────────────────────────────────────────────
-function daysSince(date) {
-    const now = new Date();
-    const past = new Date(date);
-    const diffMs = now - past;
-    return Math.floor(diffMs / (1000 * 60 * 60 * 24));
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
 // GET /api/plan/eligibility
 // Returns whether the user can generate a new plan and how many days remain.
 // Frontend calls this before opening the plan modal.
 // ─────────────────────────────────────────────────────────────────────────────
 export const checkPlanEligibility = async (req, res) => {
     try {
-        const userId = req.user.id;
-
-        const [historyRows] = await pool.query(
-            'SELECT created_at FROM workout_plans WHERE user_id = ? ORDER BY created_at DESC LIMIT 1',
-            [userId]
-        );
-
-        // No plans yet → new user, always eligible
         return res.status(200).json({
             canGenerate: true,
             isNewUser: false,
@@ -133,7 +115,7 @@ export const generateCompletePlan = async (req, res) => {
         };
 
         const metrics = calculateFitnessMetrics(aiInput);
-        aiResponse = await generateAiPlan(aiInput, metrics);
+        let aiResponse = await generateAiPlan(aiInput, metrics);
 
         if (aiResponse.error) {
             throw new Error(aiResponse.error);
