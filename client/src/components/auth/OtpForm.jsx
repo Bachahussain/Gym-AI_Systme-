@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import axios from 'axios';
+import apiClient from '../../api/apiClient';
 import { Loader2, ArrowRight } from 'lucide-react';
 
 const OtpForm = () => {
@@ -14,7 +14,6 @@ const OtpForm = () => {
     const [timeLeft, setTimeLeft] = useState(600); // 10 minutes
     const inputRefs = useRef([]);
 
-    // Redirect back to signup if accessed directly without email state
     useEffect(() => {
         if (!email) {
             navigate('/signup');
@@ -42,7 +41,6 @@ const OtpForm = () => {
         newOtp[index] = element.value;
         setOtp(newOtp);
 
-        // Focus next input
         if (element.value !== "" && index < 5) {
             inputRefs.current[index + 1].focus();
         }
@@ -71,7 +69,6 @@ const OtpForm = () => {
         });
         setOtp(newOtp);
         
-        // Focus the appropriate input
         const focusIndex = Math.min(pastedData.length, 5);
         inputRefs.current[focusIndex].focus();
     };
@@ -87,10 +84,10 @@ const OtpForm = () => {
         setLoading(true);
         setError(null);
 
-        axios.post("http://localhost:3000/auth/verify-otp", {
+        apiClient.post("/auth/verify-otp", {
             email,
             otp: otpString,
-        }, { withCredentials: true })
+        })
         .then((res) => {
             if (res.data.token) {
                 localStorage.setItem("token", res.data.token);
@@ -99,21 +96,16 @@ const OtpForm = () => {
         })
         .catch((err) => {
             setError(err.response?.data?.error || "OTP verification failed. Please try again.");
-            setOtp(['', '', '', '', '', '']); // Clear OTP on error
+            setOtp(['', '', '', '', '', '']);
             inputRefs.current[0].focus();
         })
         .finally(() => setLoading(false));
     };
 
     const handleResend = () => {
-        // Normally you would trigger send-otp again here.
-        // Assuming we need password to send-otp, you might need to handle this differently in a real app,
-        // or have a specific /auth/resend-otp endpoint that only takes email if the user is already in the map.
-        // For now, we redirect to signup.
         navigate('/signup');
     };
 
-    // Mask email for display
     const maskEmail = (email) => {
         if (!email) return '';
         const [local, domain] = email.split('@');
