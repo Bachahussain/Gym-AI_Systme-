@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import apiClient from '../../api/apiClient';
 import { User, Mail, Lock, ArrowRight, Loader2 } from 'lucide-react';
 
 const SignupForm = () => {
@@ -20,17 +20,15 @@ const SignupForm = () => {
         }
         setLoading(true);
         setError(null);
-        axios.post("http://localhost:3000/auth/send-otp", {
+        apiClient.post("/auth/send-otp", {
             name,
             email,
             password,
-        }, { withCredentials: true }
-        ).then((res) => {
-            // Navigate to OTP verification page, passing the email in state
+        }).then((res) => {
             navigate("/verify-otp", { state: { email, name } });
         }).catch((err) => {
             setError(err.response?.data?.error || "Signup failed. Please try again.");
-            console.log(err);
+            console.error(err);
         }).finally(() => setLoading(false));
     };
 
