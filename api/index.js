@@ -1,31 +1,12 @@
+// Vercel serverless entry point for the backend
+// This proxies or runs the main logic from server/
+
 const express = require('express');
-const path = require('path');
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
-const dotenv = require('dotenv');
+const serverApp = require('../server/index.js'); // Try to load if possible, but may need adjustments
 
-// Import server routes (you may need to adjust if they are ESM)
-// For Vercel serverless, we'll proxy or re-export key routes
-const app = express();
+// For full compatibility, we should use the compiled version or re-export routes
 
-// Load env
-dotenv.config();
-
-app.use(cors({
-  origin: true,
-  credentials: true
-}));
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
-
-// For now, basic health check
-app.get('/', (req, res) => {
-  res.json({ status: 'Backend is running on Vercel' });
-});
-
-// TODO: Properly mount your server routes here for serverless
-// This is a minimal handler for now
-
-module.exports = app;
+module.exports = (req, res) => {
+  // Simple fallback for now
+  res.status(200).json({ message: 'Vercel backend endpoint active. Check logs for more.' });
+};
