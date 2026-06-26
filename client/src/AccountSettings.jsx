@@ -21,16 +21,19 @@ const AccountSettings = () => {
   });
 
   const logout = () =>
-    axios.post('http://localhost:3000/auth/logout', {}, { withCredentials: true })
-      .then(() => navigate('/'))
+    axios.post('/auth/logout', {}, { withCredentials: true })
+      .then(() => {
+        localStorage.removeItem('token');
+        navigate('/');
+      })
       .catch(console.error);
 
   useEffect(() => {
     const init = async () => {
       try {
         const [meRes, accountRes] = await Promise.all([
-          axios.get('http://localhost:3000/user/me', { withCredentials: true }),
-          axios.get('http://localhost:3000/user/account-settings', { withCredentials: true }),
+          axios.get('/user/me', { withCredentials: true }),
+          axios.get('/user/account-settings', { withCredentials: true }),
         ]);
 
         setUserName(meRes.data?.name || 'Athlete');
@@ -78,7 +81,7 @@ const AccountSettings = () => {
         payload.newPassword = form.newPassword;
       }
 
-      const res = await axios.put('http://localhost:3000/user/account-settings', payload, { withCredentials: true });
+      const res = await axios.put('/user/account-settings', payload, { withCredentials: true });
       setMessage(res.data?.message || 'Account settings updated');
       setUserName(res.data?.user?.name || form.name);
       setForm((prev) => ({ ...prev, currentPassword: '', newPassword: '', confirmPassword: '' }));

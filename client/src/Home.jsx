@@ -51,7 +51,7 @@ const Home = () => {
 
   const fetchUserInfo = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/user/me', { withCredentials: true });
+      const res = await axios.get('/user/me', { withCredentials: true });
       setUserName(res.data.name);
       setProfile(res.data);
       return res.data;
@@ -60,7 +60,7 @@ const Home = () => {
 
   const fetchHomeData = async (userProfile) => {
     try {
-      const statsRes = await axios.get('http://localhost:3000/user/stats', { withCredentials: true });
+      const statsRes = await axios.get('/user/stats', { withCredentials: true });
       const s = statsRes.data;
       setStats([
         { title: 'Streak', value: `${s.streak} days`, icon: <Flame className="w-5 h-5" /> },
@@ -69,12 +69,12 @@ const Home = () => {
         { title: 'Progress', value: `${s.progressPercentage}% goal`, icon: <TrendingUp className="w-5 h-5" /> },
       ]);
 
-      const planRes = await axios.get('http://localhost:3000/api/my-plans', { withCredentials: true });
+      const planRes = await axios.get('/api/my-plans', { withCredentials: true });
       const p = planRes.data;
 
       // Fetch workout progress to know today's active day and current day index
       try {
-        const progressRes = await axios.get('http://localhost:3000/user/workout-progress', { withCredentials: true });
+        const progressRes = await axios.get('/user/workout-progress', { withCredentials: true });
         const prog = progressRes.data;
         setTodayActiveDay(prog.todayActiveDay !== undefined ? prog.todayActiveDay : null);
         if (Number.isInteger(prog.currentDayIndex)) setCurrentDayIndex(prog.currentDayIndex);
@@ -102,8 +102,11 @@ const Home = () => {
   };
 
   const logout = () =>
-    axios.post('http://localhost:3000/auth/logout', {}, { withCredentials: true })
-      .then(() => navigate('/'))
+    axios.post('/auth/logout', {}, { withCredentials: true })
+      .then(() => {
+        localStorage.removeItem('token');
+        navigate('/');
+      })
       .catch(console.error);
 
   const goalInfo = GOAL_INFO[profile?.goal] || GOAL_INFO.maintenance;

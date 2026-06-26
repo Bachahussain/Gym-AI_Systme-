@@ -46,8 +46,8 @@ const Analytics = () => {
       try {
         setLoading(true);
         const [userRes, historyRes] = await Promise.all([
-          axios.get('http://localhost:3000/user/me', { withCredentials: true }),
-          axios.get('http://localhost:3000/user/stats/history', { withCredentials: true }).catch(() => ({ data: { entries: [], summary: null } })),
+          axios.get('/user/me', { withCredentials: true }),
+          axios.get('/user/stats/history', { withCredentials: true }).catch(() => ({ data: { entries: [], summary: null } })),
         ]);
 
         setUserName(userRes.data?.name || 'Athlete');
@@ -65,8 +65,11 @@ const Analytics = () => {
   }, []);
 
   const logout = () =>
-    axios.post('http://localhost:3000/auth/logout', {}, { withCredentials: true })
-      .then(() => navigate('/'))
+    axios.post('/auth/logout', {}, { withCredentials: true })
+      .then(() => {
+        localStorage.removeItem('token');
+        navigate('/');
+      })
       .catch(console.error);
 
   const goalInfo = GOAL_INFO[profile?.goal] || GOAL_INFO.maintenance;

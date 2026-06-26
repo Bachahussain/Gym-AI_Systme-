@@ -54,24 +54,27 @@ const Premium = () => {
     const [success, setSuccess] = useState(false);
 
     useEffect(() => {
-        axios.get('http://localhost:3000/user/me', { withCredentials: true })
+        axios.get('/user/me', { withCredentials: true })
             .then(res => { setUserName(res.data.name); setProfile(res.data); })
             .catch(console.error);
     }, []);
 
     const logout = () =>
-        axios.post('http://localhost:3000/auth/logout', {}, { withCredentials: true })
-            .then(() => navigate('/'))
+        axios.post('/auth/logout', {}, { withCredentials: true })
+            .then(() => {
+                localStorage.removeItem('token');
+                navigate('/');
+            })
             .catch(console.error);
 
     const handleSubscribe = async () => {
         if (profile?.is_pro) return;
         setLoading(true);
         try {
-            await axios.post('http://localhost:3000/user/upgrade', {}, { withCredentials: true });
+            await axios.post('/user/upgrade', {}, { withCredentials: true });
             setSuccess(true);
             // Refresh profile
-            const res = await axios.get('http://localhost:3000/user/me', { withCredentials: true });
+            const res = await axios.get('/user/me', { withCredentials: true });
             setProfile(res.data);
         } catch (err) {
             console.error('Upgrade failed:', err);

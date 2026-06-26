@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../Gym-Recommendation-and-Training-Split-Management-System-main"
+		},
+		{
+			"path": "../public"
+		},
+		{
+			"path": "../server"
+		}
+	]
+}

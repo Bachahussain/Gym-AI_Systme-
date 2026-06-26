@@ -14,7 +14,7 @@ const LoginForm = () => {
         e.preventDefault();
         setLoading(true);
         setError(null);
-        axios.post("http://localhost:3000/auth/login", {
+        axios.post("/auth/login", {
             email,
             password,
         }, { withCredentials: true }

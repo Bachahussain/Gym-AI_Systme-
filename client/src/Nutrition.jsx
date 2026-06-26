@@ -53,8 +53,8 @@ const Nutrition = () => {
         try {
             setLoading(true);
             const [userRes, planRes] = await Promise.all([
-                axios.get('http://localhost:3000/user/me', { withCredentials: true }),
-                axios.get('http://localhost:3000/api/my-plans', { withCredentials: true }),
+                axios.get('/user/me', { withCredentials: true }),
+                axios.get('/api/my-plans', { withCredentials: true }),
             ]);
             setUserName(userRes.data.name);
             if (planRes.data.dietPlan) setDietPlan(planRes.data.dietPlan);
@@ -66,8 +66,11 @@ const Nutrition = () => {
     };
 
     const logout = () => {
-        axios.post('http://localhost:3000/auth/logout', {}, { withCredentials: true })
-            .then(() => navigate('/'))
+        axios.post('/auth/logout', {}, { withCredentials: true })
+            .then(() => {
+                localStorage.removeItem('token');
+                navigate('/');
+            })
             .catch(console.error);
     };
 
