@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-    baseURL: 'http://localhost:3000', // Node.js backend URL
+    baseURL: '', // Uses Vite proxy in dev; relative paths work in production too
     withCredentials: true, // Send cookies like JWT
     headers: {
         'Content-Type': 'application/json',

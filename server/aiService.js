@@ -114,7 +114,7 @@ export async function generateAiPlanGemini(user, metrics) {
 
     // Workout Plan using Gemini 3.5 Flash
     const wResponse = await ai.models.generateContent({
-      model: "gemini-3.5-flash",
+      model: "gemini-1.5-flash",
       contents: workoutPrompt,
       config: {
         responseMimeType: "application/json",
@@ -125,7 +125,7 @@ export async function generateAiPlanGemini(user, metrics) {
 
     // Diet Plan using Gemini 3.5 Flash
     const dResponse = await ai.models.generateContent({
-      model: "gemini-3.5-flash",
+      model: "gemini-1.5-flash",
       contents: dietPrompt,
       config: {
         responseMimeType: "application/json",
@@ -146,7 +146,7 @@ export async function generateAiPlanGemini(user, metrics) {
 
 export async function generateAiPlan(user, metrics) {
   if (process.env.GEMINI_API_KEY) {
-    console.log("🤖 Generating workout & diet plans using Gemini GPT-like engine (Google 3.5 Flash)...");
+    console.log("🤖 Generating workout & diet plans using Gemini (Google 1.5 Flash)...");
     const plan = await generateAiPlanGemini(user, metrics);
     if (!plan.error) {
       return plan;

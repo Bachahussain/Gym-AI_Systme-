@@ -97,7 +97,7 @@ const ProfileSetup = () => {
 
   const fetchExistingProfile = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/user/me", { withCredentials: true });
+      const res = await axios.get("/user/me", { withCredentials: true });
       if (res.data?.user_id) {
         setIsUpdateMode(!forceFullForm);
         setFormData(prev => ({
@@ -161,7 +161,7 @@ const ProfileSetup = () => {
   const completeSetup = async () => {
     setSubmitting(true);
     try {
-      const res = await axios.post("http://localhost:3000/user/profile-setup", formData, { withCredentials: true });
+      const res = await axios.post("/user/profile-setup", formData, { withCredentials: true });
       if (res.data.success) navigate("/home");
     } catch (err) {
       console.error("Profile setup failed:", err);

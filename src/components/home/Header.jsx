@@ -22,7 +22,7 @@ const Header = ({ name, logout }) => {
     React.useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const res = await axios.get("http://localhost:3000/user/me", { withCredentials: true });
+                const res = await axios.get("/user/me", { withCredentials: true });
                 setProfile(res.data);
             } catch (err) {
                 console.error("Header profile fetch error:", err);

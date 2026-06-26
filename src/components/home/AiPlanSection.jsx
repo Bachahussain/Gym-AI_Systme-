@@ -100,7 +100,7 @@ const AiPlanSection = ({ onPlanGenerated, profile }) => {
     const handleUpgrade = async () => {
         try {
             setLoading(true);
-            await axios.post("http://localhost:3000/user/upgrade", {}, { withCredentials: true });
+            await axios.post("/user/upgrade", {}, { withCredentials: true });
             alert("Upgrade successful! AI generation is now unlocked.");
             if (onPlanGenerated) onPlanGenerated();
         } catch (err) {

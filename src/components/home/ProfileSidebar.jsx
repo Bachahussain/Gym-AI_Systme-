@@ -43,8 +43,8 @@ const ProfileSidebar = ({ isOpen, onClose, name, logout }) => {
     const fetchData = async () => {
         try {
             const [profileRes, statsRes] = await Promise.all([
-                axios.get('http://localhost:3000/user/me', { withCredentials: true }),
-                axios.get('http://localhost:3000/user/stats', { withCredentials: true }),
+                axios.get('/user/me', { withCredentials: true }),
+                axios.get('/user/stats', { withCredentials: true }),
             ]);
             setProfile(profileRes.data);
             setStats(statsRes.data);

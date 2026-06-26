@@ -20,7 +20,7 @@ const SignupForm = () => {
         }
         setLoading(true);
         setError(null);
-        axios.post("http://localhost:3000/auth/send-otp", {
+        axios.post("/auth/send-otp", {
             name,
             email,
             password,

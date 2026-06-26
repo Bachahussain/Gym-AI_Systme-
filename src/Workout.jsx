@@ -101,7 +101,7 @@ function Workout() {
 
   const fetchUserInfo = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/user/me", { withCredentials: true });
+      const res = await axios.get("/user/me", { withCredentials: true });
       setUserName(res.data.name);
       setProfile(res.data);
       setUpdateData(prev => ({
@@ -180,15 +180,18 @@ function Workout() {
   };
 
   const logout = () => {
-    axios.post("http://localhost:3000/auth/logout", {}, { withCredentials: true })
-      .then(() => navigate("/"))
+    axios.post("/auth/logout", {}, { withCredentials: true })
+      .then(() => {
+        localStorage.removeItem('token');
+        navigate("/");
+      })
       .catch((err) => console.error(err));
   };
 
   const handleUpgrade = async () => {
     try {
       setLoading(true);
-      await axios.post("http://localhost:3000/user/upgrade", {}, { withCredentials: true });
+      await axios.post("/user/upgrade", {}, { withCredentials: true });
       await fetchUserInfo();
       await fetchMainData();
       alert("Pro tier unlocked! You can now generate AI plans.");

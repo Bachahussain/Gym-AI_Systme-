@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-const JWT_SECRET = 'your_jwt_secret_key';
+const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key'; // ✅ FIX: use env var
 import pool from '../../db.js';
 import { addProgressEntryIfChanged } from '../../src/services/progressTrackingService.js';
 

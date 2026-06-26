@@ -87,7 +87,7 @@ const OtpForm = () => {
         setLoading(true);
         setError(null);
 
-        axios.post("http://localhost:3000/auth/verify-otp", {
+        axios.post("/auth/verify-otp", {
             email,
             otp: otpString,
         }, { withCredentials: true })
