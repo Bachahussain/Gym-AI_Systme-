@@ -59,10 +59,19 @@ export const getExerciseGif = async (req, res) => {
                 }
             }
             if (!exercises || exercises.length === 0) {
-                // Try first word only as a last resort
-                const firstWord = searchName.split(' ')[0];
-                if (firstWord && firstWord !== searchName) {
-                    exercises = await tryFetch(firstWord);
+                // Try last word only (often the main movement e.g. 'curl', 'squat', 'press')
+                const words = searchName.split(' ');
+                if (words.length > 1) {
+                    const lastWord = words[words.length - 1];
+                    exercises = await tryFetch(lastWord);
+                }
+            }
+            if (!exercises || exercises.length === 0) {
+                // Try last two words as a last resort (e.g. 'bench press')
+                const words = searchName.split(' ');
+                if (words.length > 2) {
+                    const lastTwo = words[words.length - 2] + ' ' + words[words.length - 1];
+                    exercises = await tryFetch(lastTwo);
                 }
             }
             

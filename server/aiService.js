@@ -69,7 +69,10 @@ export async function generateAiPlanMistral(user, metrics) {
       messages: [{ role: "user", content: workoutPrompt }],
       responseFormat: { type: "json_object" }
     });
-    const workoutData = JSON.parse(wResponse.choices[0].message.content);
+    
+    let wContent = wResponse.choices[0].message.content;
+    wContent = wContent.replace(/```json/g, '').replace(/```/g, '').trim();
+    const workoutData = JSON.parse(wContent);
     const workoutPlan = workoutData.workout_plan || [];
 
     // Diet Plan
@@ -78,7 +81,10 @@ export async function generateAiPlanMistral(user, metrics) {
       messages: [{ role: "user", content: dietPrompt }],
       responseFormat: { type: "json_object" }
     });
-    const dietData = JSON.parse(dResponse.choices[0].message.content);
+    
+    let dContent = dResponse.choices[0].message.content;
+    dContent = dContent.replace(/```json/g, '').replace(/```/g, '').trim();
+    const dietData = JSON.parse(dContent);
     const dietPlan = dietData.diet_plan || [];
 
     return {
@@ -120,7 +126,10 @@ export async function generateAiPlanGemini(user, metrics) {
         responseMimeType: "application/json",
       }
     });
-    const workoutData = JSON.parse(wResponse.text);
+    
+    let wContent = wResponse.text;
+    wContent = wContent.replace(/```json/g, '').replace(/```/g, '').trim();
+    const workoutData = JSON.parse(wContent);
     const workoutPlan = workoutData.workout_plan || [];
 
     // Diet Plan using Gemini 3.5 Flash
@@ -131,7 +140,10 @@ export async function generateAiPlanGemini(user, metrics) {
         responseMimeType: "application/json",
       }
     });
-    const dietData = JSON.parse(dResponse.text);
+    
+    let dContent = dResponse.text;
+    dContent = dContent.replace(/```json/g, '').replace(/```/g, '').trim();
+    const dietData = JSON.parse(dContent);
     const dietPlan = dietData.diet_plan || [];
 
     return {
