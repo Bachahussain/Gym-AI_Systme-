@@ -76,8 +76,8 @@ const profileSetup = async (req, res) => {
     try {
         if (existingRows.length === 0) {
             const insertQuery = `INSERT INTO user_profiles 
-                (user_id, age, weight, height, gender, goal, activity_level, dietary_preference, medical_conditions, bmi, bmi_category, bmr, tdee, workout_days, preferred_split, experience_level) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+                (user_id, age, weight, height, gender, goal, activity_level, dietary_preference, medical_conditions, bmi, bmi_category, bmr, tdee, workout_days, preferred_split, experience_level, is_pro) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)`;
             await pool.query(insertQuery, [
                 userId, age, weight, height, gender.toLowerCase(), dbGoal, dbActivity, dietary_preference, medical_conditions,
                 bmi, bmi_category, bmr, tdee, day, split, experience
@@ -85,7 +85,7 @@ const profileSetup = async (req, res) => {
         } else {
             const updateQuery = `UPDATE user_profiles 
                 SET age = ?, weight = ?, height = ?, gender = ?, goal = ?, activity_level = ?, dietary_preference = ?, medical_conditions = ?, 
-                    bmi = ?, bmi_category = ?, bmr = ?, tdee = ?, workout_days = ?, preferred_split = ?, experience_level = ?
+                    bmi = ?, bmi_category = ?, bmr = ?, tdee = ?, workout_days = ?, preferred_split = ?, experience_level = ?, is_pro = 1
                 WHERE user_id = ?`;
             await pool.query(updateQuery, [
                 age, weight, height, gender.toLowerCase(), dbGoal, dbActivity, dietary_preference, medical_conditions,

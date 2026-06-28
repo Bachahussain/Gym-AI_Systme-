@@ -98,7 +98,10 @@ const Home = () => {
           setWeeklySplit([]);
         }
       }
-    } catch { /* quiet */ }
+    } catch {
+      // No plan found yet — stop the spinner and show "No plan active"
+      setWeeklySplit([]);
+    }
   };
 
   const logout = () =>
