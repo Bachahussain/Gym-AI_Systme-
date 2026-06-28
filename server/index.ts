@@ -28,7 +28,22 @@ async function startServer() {
   const PORT = 3000;
 
   app.use(cors({
-    origin: true,
+    origin: function(origin, callback) {
+      // Allow requests with no origin (mobile apps, curl, Postman)
+      if (!origin) return callback(null, true);
+      // Allow any vercel.app, replit.app, replit.dev, or localhost origin
+      const allowed = [
+        /\.vercel\.app$/,
+        /\.replit\.app$/,
+        /\.replit\.dev$/,
+        /^http:\/\/localhost/,
+        /^http:\/\/127\.0\.0\.1/,
+      ];
+      if (allowed.some(pattern => pattern.test(origin))) {
+        return callback(null, true);
+      }
+      return callback(null, true); // Allow all for now during development
+    },
     credentials: true
   }));
 
