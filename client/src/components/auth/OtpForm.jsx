@@ -6,7 +6,7 @@ import { Loader2, ArrowRight } from 'lucide-react';
 const OtpForm = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const { email, name } = location.state || {};
+    const { email, name, fallbackOtp } = location.state || {};
     
     const [otp, setOtp] = useState(['', '', '', '', '', '']);
     const [loading, setLoading] = useState(false);
@@ -120,8 +120,15 @@ const OtpForm = () => {
                     Check your email
                 </h1>
                 <p className="text-slate-500 text-sm font-medium">
-                    We sent a 6-digit code to {maskEmail(email)}
+                    {fallbackOtp 
+                        ? 'Email delivery failed. Use the code below to verify:' 
+                        : `We sent a 6-digit code to ${maskEmail(email)}`}
                 </p>
+                {fallbackOtp && (
+                    <div className="mt-3 px-5 py-3 rounded-2xl bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 text-2xl font-black tracking-widest text-center">
+                        {fallbackOtp}
+                    </div>
+                )}
             </div>
 
             {/* Error */}

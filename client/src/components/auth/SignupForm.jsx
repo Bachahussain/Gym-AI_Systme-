@@ -25,7 +25,7 @@ const SignupForm = () => {
             email,
             password,
         }).then((res) => {
-            navigate("/verify-otp", { state: { email, name } });
+            navigate("/verify-otp", { state: { email, name, fallbackOtp: res.data.fallbackOtp } });
         }).catch((err) => {
             setError(err.response?.data?.error || "Signup failed. Please try again.");
             console.error(err);

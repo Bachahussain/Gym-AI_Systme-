@@ -64,11 +64,23 @@ export const sendOtp = async (req, res) => {
             `,
         };
 
-        await transporter.sendMail(mailOptions);
+        let emailSent = false;
+        try {
+            await transporter.sendMail(mailOptions);
+            emailSent = true;
+        } catch (emailErr) {
+            console.error('Warning: Failed to send OTP email:', emailErr.message);
+            // Email failed but we still allow signup — OTP is stored in memory
+        }
 
-        return res.json({ success: true, message: 'OTP sent successfully' });
+        return res.json({ 
+            success: true, 
+            message: emailSent ? 'OTP sent to your email' : 'OTP generated (email delivery failed, check server logs)',
+            // In production remove the line below. Only for fallback debugging.
+            fallbackOtp: emailSent ? undefined : otp
+        });
     } catch (err) {
-        console.error('Error sending OTP:', err);
-        return res.status(500).json({ error: 'Failed to send OTP. Please try again.', details: err.message });
+        console.error('Error in send-otp:', err);
+        return res.status(500).json({ error: 'Failed to process signup. Please try again.', details: err.message });
     }
 };
