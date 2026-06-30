@@ -38,14 +38,19 @@ export const sendOtp = async (req, res) => {
 
         // Set up nodemailer transporter
         const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            connectionTimeout: 2500, // 2.5 seconds
-            greetingTimeout: 2500,
-            socketTimeout: 5000,
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
+            connectionTimeout: 6000, // 6 seconds
+            greetingTimeout: 6000,
+            socketTimeout: 6000,
             auth: {
                 user: process.env.GMAIL_USER,
                 pass: process.env.GMAIL_APP_PASSWORD?.replace(/\s/g, ''),
             },
+            tls: {
+                rejectUnauthorized: false
+            }
         });
 
         const mailOptions = {
